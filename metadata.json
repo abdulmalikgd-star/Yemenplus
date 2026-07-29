@@ -1,0 +1,6 @@
+{
+  "name": "Yemen Plus",
+  "description": "الموقع الرسمي لـ يمن بلاس - شركة حلول رقمية وتصميم وتسويق",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
