@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 interface LogoProps {
   className?: string;
@@ -6,14 +6,37 @@ interface LogoProps {
 }
 
 export const Logo: React.FC<LogoProps> = ({ className = '', size = 'md' }) => {
-  const scale = size === 'sm' ? 0.8 : size === 'lg' ? 1.35 : 1;
+  const [srcIndex, setSrcIndex] = useState(0);
 
+  // مصادر الصور المرفوعة في مجلد public لديك
+  const sources = [
+    '/logo.webp',
+    '/logo.png'
+  ];
+
+  const scale = size === 'sm' ? 0.8 : size === 'lg' ? 1.35 : 1;
+  const heightStyle = size === 'sm' ? 'h-9 sm:h-10' : size === 'lg' ? 'h-14 sm:h-16' : 'h-11 sm:h-13';
+
+  // 1. تجربة عرض الصور المرفوعة في public بالترتيب
+  if (srcIndex < sources.length) {
+    return (
+      <div className={`inline-flex items-center select-none ${className}`}>
+        <img
+          src={sources[srcIndex]}
+          alt="يمن بلاس | Yemen Plus"
+          onError={() => setSrcIndex((prev) => prev + 1)}
+          className={`${heightStyle} w-auto object-contain filter drop-shadow-[0_2px_10px_rgba(255,255,255,0.2)]`}
+        />
+      </div>
+    );
+  }
+
+  // 2. كود الـ SVG الاحتياطي المضمون 100% في حال حدوث أي خلل
   return (
     <div 
       dir="ltr" 
       className={`inline-flex items-center gap-3 select-none ${className}`}
     >
-      {/* 3D Intersecting Plus Icon Emblem */}
       <div 
         className="relative flex items-center justify-center shrink-0" 
         style={{ width: `${46 * scale}px`, height: `${46 * scale}px` }}
@@ -34,41 +57,18 @@ export const Logo: React.FC<LogoProps> = ({ className = '', size = 'md' }) => {
               <stop offset="50%" stopColor="#2563eb" />
               <stop offset="100%" stopColor="#1d4ed8" />
             </linearGradient>
-            
-            <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="3" result="blur" />
-              <feComposite in="SourceGraphic" in2="blur" operator="over" />
-            </filter>
           </defs>
 
-          {/* Silver diagonal capsule (-30deg) */}
           <g transform="rotate(-30 60 60)">
-            <rect 
-              x="43" 
-              y="12" 
-              width="34" 
-              height="96" 
-              rx="17" 
-              fill="url(#silverGradient)" 
-            />
+            <rect x="43" y="12" width="34" height="96" rx="17" fill="url(#silverGradient)" />
           </g>
 
-          {/* Blue diagonal capsule (+30deg) */}
           <g transform="rotate(30 60 60)">
-            <rect 
-              x="43" 
-              y="12" 
-              width="34" 
-              height="96" 
-              rx="17" 
-              fill="url(#blueGradient)" 
-              opacity="0.95"
-            />
+            <rect x="43" y="12" width="34" height="96" rx="17" fill="url(#blueGradient)" opacity="0.95" />
           </g>
         </svg>
       </div>
 
-      {/* Brand Typography matching official logo */}
       <div className="flex flex-col text-right justify-center" dir="rtl">
         <div className="flex items-center gap-1.5">
           <span 
