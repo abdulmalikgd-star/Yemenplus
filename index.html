@@ -42,3 +42,233 @@
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
+<!-- ================= WhatsApp Widget Start ================= -->
+<div class="wa-widget-container">
+  <!-- نافذة المحادثة المنبثقة -->
+  <div class="wa-chat-box" id="waChatBox">
+    <!-- الهيدر -->
+    <div class="wa-header">
+      <div class="wa-avatar">
+        <img src="https://yemplus.com/favicon.webp" alt="Yemen Plus" />
+      </div>
+      <div class="wa-info">
+        <span class="wa-title">Yemen Plus</span>
+        <span class="wa-status"><span class="status-dot"></span> online</span>
+      </div>
+      <button type="button" class="wa-close-btn" onclick="toggleWaBox()">&times;</button>
+    </div>
+
+    <!-- جسم المحادثة -->
+    <div class="wa-body">
+      <div class="wa-msg">
+        <span class="wa-msg-author">Yemen Plus</span>
+        <p>مرحباً<br>كيف أقدر أساعدك؟</p>
+      </div>
+    </div>
+
+    <!-- الزر السفلي للمراسلة -->
+    <div class="wa-footer">
+      <a href="javascript:void(0)" onclick="sendToWhatsapp()" class="wa-action-btn">ابدأ المراسلة</a>
+    </div>
+  </div>
+
+  <!-- الزر العائم الخارجي -->
+  <button type="button" class="wa-float-btn" onclick="toggleWaBox()">
+    <span>اسألنا على واتساب</span>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="#fff" width="22" height="22">
+      <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3 18.6-68.1-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18.1-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18.1-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+    </svg>
+  </button>
+</div>
+
+<style>
+  .wa-widget-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 999999;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    direction: rtl;
+  }
+
+  .wa-float-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #25d366;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+  }
+
+  .wa-float-btn:hover {
+    background-color: #20ba5a;
+    transform: translateY(-2px);
+  }
+
+  .wa-chat-box {
+    display: none;
+    position: absolute;
+    bottom: 60px;
+    right: 0;
+    width: 320px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    flex-direction: column;
+  }
+
+  .wa-chat-box.active {
+    display: flex !important;
+  }
+
+  .wa-header {
+    background-color: #054c44;
+    color: #ffffff;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .wa-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .wa-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .wa-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .wa-title {
+    font-weight: bold;
+    font-size: 15px;
+  }
+
+  .wa-status {
+    font-size: 12px;
+    opacity: 0.85;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #25d366;
+    border-radius: 50%;
+  }
+
+  .wa-close-btn {
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-size: 24px;
+    cursor: pointer;
+    line-height: 1;
+    opacity: 0.8;
+  }
+
+  .wa-close-btn:hover {
+    opacity: 1;
+  }
+
+  .wa-body {
+    padding: 20px 16px;
+    background-color: #e5ddd5;
+    background-image: radial-gradient(#cbd3c8 1px, transparent 1px);
+    background-size: 12px 12px;
+    min-height: 100px;
+  }
+
+  .wa-msg {
+    background: #ffffff;
+    padding: 10px 14px;
+    border-radius: 0px 12px 12px 12px;
+    max-width: 85%;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+  }
+
+  .wa-msg-author {
+    font-size: 11px;
+    color: #8696a0;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .wa-msg p {
+    margin: 0;
+    font-size: 14px;
+    color: #111b21;
+    line-height: 1.5;
+  }
+
+  .wa-footer {
+    padding: 14px 16px;
+    background-color: #ffffff;
+  }
+
+  .wa-action-btn {
+    display: block;
+    text-align: center;
+    background-color: #25d366;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 11px 0;
+    border-radius: 25px;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+  }
+
+  .wa-action-btn:hover {
+    background-color: #1eb957;
+  }
+</style>
+
+<script>
+  var waPhoneNumber = "967738880088"; 
+  var waMessage = "مرحباً، أود الاستفسار عن خدماتكم";
+
+  function toggleWaBox() {
+    var box = document.getElementById('waChatBox');
+    if (box) {
+      if (box.classList.contains('active')) {
+        box.classList.remove('active');
+      } else {
+        box.classList.add('active');
+      }
+    }
+  }
+
+  function sendToWhatsapp() {
+    var encodedText = encodeURIComponent(waMessage);
+    var url = "https://wa.me/" + waPhoneNumber + "?text=" + encodedText;
+    window.open(url, '_blank');
+  }
+</script>
+<!-- ================= WhatsApp Widget End ================= -->
